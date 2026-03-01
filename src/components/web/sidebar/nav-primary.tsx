@@ -5,15 +5,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import type { NavPrimaryItem } from '@/types/types'
 import { Link } from '@tanstack/react-router'
-import type { LucideIcon } from 'lucide-react'
-
-export interface NavPrimaryItem {
-  name: string
-  to: string
-  activeOptions: { exact: boolean }
-  icon: LucideIcon
-}
 
 export function NavPrimary({ navItems }: { navItems: NavPrimaryItem[] }) {
   return (
