@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
-import { loginSchema } from '@/schemas/auth'
+import { loginSchema } from '@/schemas/authSchema'
 import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useTransition } from 'react'

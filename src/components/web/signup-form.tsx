@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { signUpSchema } from '@/schemas/auth'
+import { signUpSchema } from '@/schemas/authSchema'
 import { useForm } from '@tanstack/react-form'
 import { authClient } from '@/lib/auth-client'
 import { toast } from 'sonner'
