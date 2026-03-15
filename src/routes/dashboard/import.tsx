@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Field,
   FieldError,
@@ -15,14 +14,12 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { ScrollFade } from '@/components/ui/scroll-fade'
-import { Separator } from '@/components/ui/separator'
 import { Spinner } from '@/components/ui/spinner'
-import { cn } from '@/lib/utils'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TypographyH2 } from '@/components/ui/TypographyH2'
 import { TypographyP } from '@/components/ui/TypographyP'
-import { bulkImportFn, mapUrlFn, scrapUrlFn } from '@/data/items'
+import DiscoveredURLImport from '@/components/web/DiscoveredURLImport'
+import { mapUrlFn, scrapUrlFn } from '@/data/items'
 import { bulkImportSchema, importSchema } from '@/schemas/importSchema'
 import type { SearchResultWeb } from '@mendable/firecrawl-js'
 import { useForm } from '@tanstack/react-form'
@@ -37,10 +34,8 @@ export const Route = createFileRoute('/dashboard/import')({
 
 function RouteComponent() {
   const [isPending, startTransition] = useTransition()
-  const [isBulkPending, startBulkTransition] = useTransition()
 
   const [discoveredUrls, setDiscoveredUrls] = useState<SearchResultWeb[]>([])
-  const [selectedUrls, setSelectedUrls] = useState<Set<string>>(new Set())
 
   const form = useForm({
     defaultValues: {
@@ -73,37 +68,6 @@ function RouteComponent() {
       })
     },
   })
-
-  const startBulkImport = () => {
-    startBulkTransition(async () => {
-      const result = await bulkImportFn({
-        data: { urls: Array.from(selectedUrls) },
-      })
-      toast.success(`Successfully imported ${result.length} URL(s)!`)
-    })
-  }
-
-  const toggleSelectAll = () => {
-    setSelectedUrls((prev) => {
-      if (prev.size === discoveredUrls.length) {
-        return new Set()
-      } else {
-        return new Set(discoveredUrls.map((url) => url.url))
-      }
-    })
-  }
-
-  const toggleUrlSelection = (url: string) => {
-    setSelectedUrls((prev) => {
-      const newSet = new Set(prev)
-      if (newSet.has(url)) {
-        newSet.delete(url)
-      } else {
-        newSet.add(url)
-      }
-      return newSet
-    })
-  }
 
   return (
     <div className="flex flex-1 flex-col space-y-4 items-center justify-center">
@@ -190,7 +154,7 @@ function RouteComponent() {
               <CardHeader>
                 <CardTitle>Bulk Import</CardTitle>
                 <CardDescription>
-                  Discover and import multiple URLs from a website at once 🚀
+                  Discover and import multiple URLs from a website at once!
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-muted-foreground text-sm">
@@ -276,76 +240,7 @@ function RouteComponent() {
               </CardContent>
               <CardFooter>
                 {discoveredUrls.length > 0 && (
-                  <div className="flex flex-col gap-3 w-full">
-                    <div className="flex items-center justify-between">
-                      <TypographyP>
-                        {selectedUrls.size
-                          ? `${selectedUrls.size} of ${discoveredUrls.length} selected`
-                          : `${discoveredUrls.length} URLs discovered!`}
-                      </TypographyP>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={toggleSelectAll}
-                      >
-                        {selectedUrls.size === discoveredUrls.length
-                          ? 'Deselect All'
-                          : 'Select All'}
-                      </Button>
-                    </div>
-                    <Separator />
-                    <ScrollFade className="h-80">
-                      {discoveredUrls.map((item) => {
-                        const id = `url-${item.url}`
-                        const isChecked = selectedUrls.has(item.url)
-                        return (
-                          <label
-                            key={item.url}
-                            htmlFor={id}
-                            className={cn(
-                              'flex items-start gap-3 rounded-lg border p-3 cursor-pointer transition-colors hover:bg-accent/50',
-                              isChecked && 'border-primary bg-accent',
-                            )}
-                          >
-                            <Checkbox
-                              id={id}
-                              checked={isChecked}
-                              onCheckedChange={() =>
-                                toggleUrlSelection(item.url)
-                              }
-                              className="mt-0.5"
-                              aria-label={item.title || item.url}
-                            />
-                            <div className="flex flex-col gap-0.5 min-w-0">
-                              <span className="text-sm font-medium leading-tight truncate">
-                                {item.title || item.url}
-                              </span>
-                              {item.description && (
-                                <span className="text-xs text-muted-foreground line-clamp-2">
-                                  {item.description}
-                                </span>
-                              )}
-                              <span className="text-xs text-muted-foreground/70 truncate">
-                                {item.url}
-                              </span>
-                            </div>
-                          </label>
-                        )
-                      })}
-                    </ScrollFade>
-                    {selectedUrls.size > 0 && (
-                      <Button className="mt-2" onClick={startBulkImport}>
-                        {isBulkPending ? (
-                          <>
-                            <Spinner data-icon="inline-start" />
-                            Importing
-                          </>
-                        ) : (
-                          `Import ${selectedUrls.size} Selected URL(s)`
-                        )}
-                      </Button>
-                    )}
-                  </div>
+                  <DiscoveredURLImport discoveredUrls={discoveredUrls} />
                 )}
               </CardFooter>
             </Card>

@@ -16,7 +16,7 @@ export const authFnMiddleware = createMiddleware({ type: 'function' }).server(
 
 export const authMiddleware = createMiddleware().server(
   async ({ next, pathname }) => {
-    if (!pathname.startsWith('/dashboard')) {
+    if (!pathname.startsWith('/dashboard') || !pathname.startsWith('/api/ai')) {
       return next()
     }
 

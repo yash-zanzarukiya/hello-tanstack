@@ -11,3 +11,10 @@ export interface NavPrimaryItem {
 export interface NavUserProps {
   user: User
 }
+
+export interface BulkScrapProgress {
+  completed: number
+  total: number
+  url: string
+  status: 'COMPLETED' | 'FAILED'
+}
