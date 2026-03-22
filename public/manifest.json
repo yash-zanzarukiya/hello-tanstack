@@ -1,6 +1,7 @@
 {
-  "short_name": "TanStack App",
-  "name": "Create TanStack App Sample",
+  "short_name": "recoil",
+  "name": "ReCoil - AI-Powered Knowledge Base",
+  "description": "ReCoil is an AI-powered knowledge base that helps you organize and access your information efficiently. With ReCoil, you can create, manage, and search through your notes and documents with ease. The app uses advanced AI algorithms to provide intelligent suggestions and insights, making it easier for you to find what you need when you need it.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +19,16 @@
       "sizes": "512x512"
     }
   ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#c8a044",
   "background_color": "#ffffff"
 }

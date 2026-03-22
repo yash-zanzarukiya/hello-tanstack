@@ -4,6 +4,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
+import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler'
 import { AppSidebar } from '@/components/web/sidebar/app-sidebar'
 import { getSessionFn } from '@/data/session'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
@@ -20,9 +21,12 @@ function RouteComponent() {
     <SidebarProvider>
       <AppSidebar user={user} />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
+        <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background/80 backdrop-blur-md px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="h-1/2 my-auto" />
+          <div className="ml-auto">
+            <AnimatedThemeToggler />
+          </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Outlet />

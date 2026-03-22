@@ -11,7 +11,7 @@ import { Link } from '@tanstack/react-router'
 export function NavPrimary({ navItems }: { navItems: NavPrimaryItem[] }) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Hello World</SidebarGroupLabel>
+      <SidebarGroupLabel>Navigation</SidebarGroupLabel>
       <SidebarMenu>
         {navItems.map((item) => (
           <SidebarMenuItem key={item.name}>

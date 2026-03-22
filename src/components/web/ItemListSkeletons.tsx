@@ -13,10 +13,11 @@ import { CopyIcon } from 'lucide-react'
 function ItemListSkeletons() {
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {[1, 2, 3, 4].map((item) => (
+      {[1, 2, 3, 4, 5, 6].map((item) => (
         <Card
           key={item}
-          className="relative w-full max-w-sm overflow-hidden pt-0 pb-4"
+          className="relative w-full max-w-sm overflow-hidden pt-0 pb-4 bg-card/50 backdrop-blur-sm animate-pulse"
+          style={{ animationDelay: `${item * 100}ms` }}
         >
           <Skeleton className="relative z-20 aspect-video w-full object-cover" />
           <CardHeader>

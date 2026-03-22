@@ -1,12 +1,13 @@
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Button, buttonVariants } from '../ui/button'
-import { ModeSwitcher } from '../ui/mode-switcher'
+import { AnimatedThemeToggler } from '../ui/animated-theme-toggler'
 import { authClient } from '@/lib/auth-client'
 import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
+import { Logo } from '../ui/logo'
 
 export default function NavBar() {
   const navigate = useNavigate()
-
   const { data: session, isPending } = authClient.useSession()
 
   const handleLogout = async () => {
@@ -24,26 +25,23 @@ export default function NavBar() {
   }
 
   return (
-    <>
-      <nav className="sticky top-0 z-50 flex justify-between p-4 px-6 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-lg">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+        <Link to="/" className="transition-opacity hover:opacity-80">
+          <Logo />
+        </Link>
+
         <div className="flex items-center gap-3">
-          <img
-            src="https://tanstack.com/images/logos/logo-color-600.png"
-            alt="TanStack Logo"
-            className="size-8"
-          />
-          <h1 className="font-semibold text-xl tracking-tight">
-            Hello TanStack Start
-          </h1>
-        </div>
-        <div className="flex gap-4 items-center">
-          <ModeSwitcher />
+          <AnimatedThemeToggler />
           {isPending ? null : session ? (
             <>
-              <Button onClick={handleLogout} variant="outline">
-                Logout
+              <Button onClick={handleLogout} variant="ghost" size="sm">
+                Log Out
               </Button>
-              <Link to="/dashboard" className={buttonVariants()}>
+              <Link
+                to="/dashboard"
+                className={cn(buttonVariants({ size: 'sm' }))}
+              >
                 Dashboard
               </Link>
             </>
@@ -51,17 +49,17 @@ export default function NavBar() {
             <>
               <Link
                 to="/login"
-                className={buttonVariants({ variant: 'outline' })}
+                className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
               >
-                Login
+                Log In
               </Link>
-              <Link to="/signup" className={buttonVariants()}>
+              <Link to="/signup" className={cn(buttonVariants({ size: 'sm' }))}>
                 Get Started
               </Link>
             </>
           )}
         </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   )
 }

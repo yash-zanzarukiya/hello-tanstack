@@ -2,7 +2,6 @@ import { useTheme } from '@/lib/theme-provider'
 import React from 'react'
 import { Button } from './button'
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip'
-import { Badge } from './badge'
 import { Kbd } from './kbd'
 
 export const DARK_MODE_FORWARD_TYPE = 'dark-mode-forward'

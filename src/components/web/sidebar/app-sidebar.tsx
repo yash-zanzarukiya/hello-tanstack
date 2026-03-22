@@ -10,18 +10,7 @@ import { NavPrimary } from '@/components/web/sidebar/nav-primary'
 import { NavUser } from '@/components/web/sidebar/nav-user'
 import type { NavPrimaryItem, NavUserProps } from '@/types/types'
 import { linkOptions } from '@tanstack/react-router'
-import {
-  BookmarkIcon,
-  CompassIcon,
-  GalleryVerticalEndIcon,
-  ImportIcon,
-} from 'lucide-react'
-
-const appInfo = {
-  name: 'ReCoil',
-  desc: 'Your AI Knowledge Base',
-  logo: <GalleryVerticalEndIcon />,
-}
+import { BookmarkIcon, CompassIcon, ImportIcon } from 'lucide-react'
 
 const navItems: NavPrimaryItem[] = linkOptions([
   {
@@ -48,7 +37,7 @@ export function AppSidebar({ user }: NavUserProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <MySideBarHeader appInfo={appInfo} />
+        <MySideBarHeader />
       </SidebarHeader>
       <SidebarContent>
         <NavPrimary navItems={navItems} />

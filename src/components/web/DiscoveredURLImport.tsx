@@ -11,6 +11,8 @@ import { bulkImportFn } from '@/data/items'
 import { toast } from 'sonner'
 import type { BulkScrapProgress } from '@/types/types'
 import { Progress } from '../ui/progress'
+import { motion } from 'motion/react'
+import { CheckCircle2, Globe } from 'lucide-react'
 
 function DiscoveredURLImport({
   discoveredUrls,
@@ -72,13 +74,23 @@ function DiscoveredURLImport({
   }
 
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex flex-col gap-3 w-full"
+    >
       <div className="flex items-center justify-between">
-        <TypographyP>
-          {selectedUrls.size
-            ? `${selectedUrls.size} of ${discoveredUrls.length} selected`
-            : `${discoveredUrls.length} URLs discovered!`}
-        </TypographyP>
+        <div className="flex items-center gap-2">
+          <div className="flex size-6 items-center justify-center rounded-md bg-primary/10">
+            <Globe className="size-3.5 text-primary" />
+          </div>
+          <TypographyP>
+            {selectedUrls.size
+              ? `${selectedUrls.size} of ${discoveredUrls.length} selected`
+              : `${discoveredUrls.length} URLs discovered`}
+          </TypographyP>
+        </div>
         <Button variant="outline" size="sm" onClick={toggleSelectAll}>
           {selectedUrls.size === discoveredUrls.length
             ? 'Deselect All'
@@ -87,16 +99,19 @@ function DiscoveredURLImport({
       </div>
       <Separator />
       <ScrollFade className="h-80">
-        {discoveredUrls.map((item) => {
+        {discoveredUrls.map((item, index) => {
           const id = `url-${item.url}`
           const isChecked = selectedUrls.has(item.url)
           return (
-            <label
+            <motion.label
               key={item.url}
               htmlFor={id}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.2, delay: Math.min(index * 0.03, 0.5) }}
               className={cn(
-                'flex items-start gap-3 rounded-lg border p-3 cursor-pointer transition-colors hover:bg-accent/50',
-                isChecked && 'border-primary bg-accent',
+                'flex items-start gap-3 rounded-lg border p-3 cursor-pointer transition-all hover:bg-accent/50',
+                isChecked && 'border-primary/30 bg-primary/5',
               )}
             >
               <Checkbox
@@ -119,42 +134,49 @@ function DiscoveredURLImport({
                   {item.url}
                 </span>
               </div>
-            </label>
+            </motion.label>
           )
         })}
       </ScrollFade>
       {progress && (
-        <div className="space-y-2">
+        <motion.div
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-2 rounded-lg border bg-muted/30 p-3"
+        >
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">
-              Competed: {progress.completed} / {progress.total}
+            <span className="flex items-center gap-1.5 text-muted-foreground">
+              <CheckCircle2 className="size-3.5 text-primary" />
+              Completed: {progress.completed} / {progress.total}
             </span>
-            <span className="font-medium">
+            <span className="font-medium text-primary">
               {((progress.completed / progress.total) * 100).toFixed(0)}%
             </span>
           </div>
           <Progress value={(progress.completed / progress.total) * 100} />
-        </div>
+        </motion.div>
       )}
       {selectedUrls.size > 0 && (
-        <Button
-          className="mt-2"
-          onClick={startBulkImport}
-          disabled={isBulkPending}
-        >
-          {isBulkPending ? (
-            <>
-              <Spinner data-icon="inline-start" />
-              {progress
-                ? `Importing ${progress.completed} of ${progress.total}...`
-                : 'Starting Import...'}
-            </>
-          ) : (
-            `Import ${selectedUrls.size} Selected URL(s)`
-          )}
-        </Button>
+        <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
+          <Button
+            className="mt-2 w-full"
+            onClick={startBulkImport}
+            disabled={isBulkPending}
+          >
+            {isBulkPending ? (
+              <>
+                <Spinner data-icon="inline-start" />
+                {progress
+                  ? `Importing ${progress.completed} of ${progress.total}...`
+                  : 'Starting Import...'}
+              </>
+            ) : (
+              `Import ${selectedUrls.size} Selected URL(s)`
+            )}
+          </Button>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   )
 }
 
